@@ -1,9 +1,9 @@
+import datetime
+
 print('-----------------------------------------')
 print('           BIRTHDAY COUNTDOWN')
 print('-----------------------------------------')
 print()
-
-import datetime
 
 y = int(input('What year were you born? '))
 m = int(input('What month were you born? '))
@@ -33,9 +33,7 @@ else:
     bd_year = today.year + 1
 
 n_birthday = datetime.date(bd_year, birthday.month, birthday.day)
-# print(n_birthday.toordinal())
-# print(today.toordinal())
-countdown = (n_birthday.toordinal() - today.toordinal())
+countdown = (n_birthday - today).days
 
 print(f'\nIt looks like you were born on {birthday}.')
 
