@@ -25,8 +25,22 @@ def load_journal(filename):
         return journal
 
 
+def add_entry(new_entries):
+    return new_entries.append([input('Enter new journal entry below\n')])
+
+
 def list_journal(journal, new_entries):
-    pass
+    line_number = 1
+    if journal:
+        for line in journal:
+            print(f'{line_number}. {line}')
+            line_number += 1
+    elif new_entries:
+        for line in new_entries:
+            print(f'{line_number}. {line}')
+            line_number += 1
+    else:
+        print('No entries to display')
 
 
 def save_exit(filename, new_lines):
@@ -36,13 +50,34 @@ def save_exit(filename, new_lines):
     print('... save complete ...')
 
 
-def add_entry(new_entries):
-    pass
+def get_command():
+    command = input('What would you like to do? [L]ist, [A]dd, E[x]it: ').lower()
+    if command == 'l':
+        return 'list'
+    elif command == 'a':
+        return 'add'
+    elif command == 'x':
+        return 'exit'
+    else:
+        return None
 
 
 def main():
     journal_file = './data/test_journal.jrn'
     journal = load_journal(journal_file)
+    new_lines = []
+
+    while True:
+        command = get_command()
+        if command == 'list':
+            list_journal(journal, new_lines)
+        elif command == 'add':
+            new_lines = add_entry(new_lines)
+        elif command == 'exit':
+            save_exit(journal_file, new_lines)
+            exit(0)
+        else:
+            print('That is not a valid command. Try again.')
 
 
 main()
