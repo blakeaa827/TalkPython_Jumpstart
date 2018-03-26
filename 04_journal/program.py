@@ -76,7 +76,7 @@ def get_command():
 
 
 def main():
-    journal_file = './data/test_journal.jrn'
+    journal_file = './data/test.jrn'
     journal = load_journal(journal_file)
     journal_adds = []
 
