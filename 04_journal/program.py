@@ -1,4 +1,22 @@
 import os.path
+import journal
+
+
+def main():
+    jrn_file = 'test'
+    jrn = journal.load(jrn_file)
+
+    while True:
+        cmd = get_cmd()
+        if cmd == 'list':
+            print_jrn(jrn)
+        elif cmd == 'add':
+            jrn.append(new_entry())
+        elif cmd == 'exit':
+            journal.save_exit(jrn_file, jrn)
+            exit(0)
+        else:
+            print('That is not a valid command. Try again.')
 
 
 def print_banner():
@@ -8,89 +26,31 @@ def print_banner():
     print()
 
 
-def load_journal(filename):
-    if not os.path.isfile(filename) and not os.path.islink(filename):
-        print(f'... journal file \'{filename}\' does not exist ...')
-        print('... initializing new journal ...')
-        with open(filename, 'x') as file:
-            pass
-        return []
-    else:
-        print(f'... loading journal entries from {filename} ...')
-        journal = []
-        with open(filename, 'r') as file:
-            for line in file:
-                journal += [line.rstrip()]
-        print(f'... loaded {len(journal)} items')
-        return journal
-
-
-def add_entry(new_entries):
-    return new_entries + [input('Enter new journal entry below\n')]
-
-
-def list_journal(journal, new_entries):
-    if not journal and not new_entries:
-        print('No entries to display')
-        return()
-    else:
-        pass
-
-    line_number = 1
-
-    if journal:
-        for line in journal:
-            print(f'{line_number}. {line}')
-            line_number += 1
-    else:
-        pass
-
-    if new_entries:
-        for line in new_entries:
-            print(f'{line_number}. {line}')
-            line_number += 1
-    else:
-        pass
-
-    return()
-
-
-def save_exit(filename, new_lines):
-    print(f'... saving new journal entries to {filename} ...')
-    with open(filename, 'a') as file:
-        for line in new_lines:
-            file.write(line + '\n')
-    print('... save complete ...')
-
-
-def get_command():
-    command = input('What would you like to do? [L]ist, [A]dd, E[x]it: ').lower()
-    if command == 'l':
+def get_cmd():
+    cmd = input('What would you like to do? [L]ist, [A]dd, E[x]it: ').lower().strip()
+    if cmd == 'l':
         return 'list'
-    elif command == 'a':
+    elif cmd == 'a':
         return 'add'
-    elif command == 'x':
+    elif cmd == 'x':
         return 'exit'
     else:
         return None
 
 
-def main():
-    journal_file = './data/test_journal.jrn'
-    journal = load_journal(journal_file)
-    journal_adds = []
-
-    while True:
-        command = get_command()
-        if command == 'list':
-            list_journal(journal, journal_adds)
-        elif command == 'add':
-            journal_adds = add_entry(journal_adds)
-        elif command == 'exit':
-            save_exit(journal_file, journal_adds)
-            exit(0)
-        else:
-            print('That is not a valid command. Try again.')
+def print_jrn(data):
+    if not data:
+        print('No entries to display')
+        return()
+    else:
+        for i, line in enumerate(reversed(data)):
+            print(f'{i + 1}. {line}')
+        return()
 
 
-main()
+def new_entry():
+    return input('Enter new journal entry below\n')
+
+
+if __name__ == '__main__':
+    main()
