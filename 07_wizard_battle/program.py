@@ -1,4 +1,5 @@
 import random
+import time
 
 import characters
 
@@ -17,15 +18,10 @@ def generate_env():
         characters.Predator('tiger', 25),
         characters.Predator('bear', 30),
         characters.Dragon('silver dragon', 50, fire_breath=True),
-        characters.Wizard('Evil Wizard', 1000),
+        # characters.Wizard('Evil Wizard', 1000),
     ]
 
     hero = characters.Wizard('Knox', 75)
-
-    # for char in enemies:
-    #     print(char)
-    #
-    # print(hero)
 
     return enemies, hero
 
@@ -45,15 +41,38 @@ def do_battle(hero, enemy):
         return False
 
 
-
-def look():
-    pass
+def look(enemies, hero):
+    print()
+    print(f'{hero.name} scans the immediate area and sees the following creatures:')
+    for enemy in enemies:
+        print(f'A(n) {enemy.name} of level {enemy.level}')
 
 
 def main():
     print_banner()
     enemies, hero = generate_env()
-    do_battle(hero, random.choice(enemies))
+    look(enemies, hero)
+    while enemies:
+        enemy = random.choice(enemies)
+        print()
+        print(f'A(n) {enemy.name} jumps out from behind a tree.')
+        action = input('What do you do? [A]ttack, [R]un, or [L]ook Around: ').lower().strip()
+        if action == 'a':
+            if do_battle(hero, enemy):
+                enemies.remove(enemy)
+            else:
+                print(f'{hero.name} flees to recover.')
+                time.sleep(5)
+
+        elif action == 'r':
+            print(f'{hero.name} runs away to fight another day!')
+        elif action == 'l':
+            look(enemies, hero)
+        elif action == 'q':
+            exit(0)
+        else:
+            print(f'Sorry, I don\'t understand {action}')
+    print(f'The Grand Wizard {hero.name} has defeated all of the enemies!  Goodbye!')
 
 
 if __name__ == '__main__':
