@@ -1,3 +1,5 @@
+import random
+
 import characters
 
 
@@ -14,19 +16,34 @@ def generate_env():
         characters.SmallAnimal('bat', 3),
         characters.Predator('tiger', 25),
         characters.Predator('bear', 30),
-        characters.Dragon('silver dragon', 50),
+        characters.Dragon('silver dragon', 50, fire_breath=True),
         characters.Wizard('Evil Wizard', 1000),
     ]
 
     hero = characters.Wizard('Knox', 75)
 
+    # for char in enemies:
+    #     print(char)
+    #
+    # print(hero)
 
-def do_battle():
+    return enemies, hero
 
 
+def do_battle(hero, enemy):
+    print(f'You attack the {enemy.name}')
+    hero_roll = hero.attack_roll()
+    print(f'{hero.name} rolls {hero_roll}.')
+    enemy_roll = enemy.attack_roll()
+    print(f'The {enemy.name} rolls {enemy_roll}.')
 
-def game_loop():
-    pass
+    if hero_roll >= enemy_roll:
+        print(f'{hero.name} has defeated the {enemy.name}!')
+        return True
+    else:
+        print(f'Our grand hero {hero.name} has been smited!')
+        return False
+
 
 
 def look():
@@ -35,8 +52,8 @@ def look():
 
 def main():
     print_banner()
-    generate_env()
-    game_loop()
+    enemies, hero = generate_env()
+    do_battle(hero, random.choice(enemies))
 
 
 if __name__ == '__main__':
