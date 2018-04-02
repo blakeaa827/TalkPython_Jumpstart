@@ -5,7 +5,10 @@ import collections
 def main():
     banner()
     search_folder, search_text = get_params()
-    search_files(search_folder, search_text, list())
+    result_count = 0
+    for result in search_dir(search_folder, search_text):
+        result_count += 1
+        print(result_count)
 
 
 def banner():
@@ -31,28 +34,29 @@ def get_params():
     return search_folder, search_text
 
 
-def search_files(folder, text, results):
-    Result = collections.namedtuple('search_result',
-                                    'file, line_number, line_text')
+def search_dir(folder, text):
     for file in os.listdir(folder):
         abs_file_path = os.path.join(os.path.abspath(folder), file)
         if os.path.isdir(abs_file_path):
-            search_files(abs_file_path, text, results)
+            yield from search_dir(abs_file_path, text)
         else:
-            try:
-                with open(abs_file_path, 'r', encoding='utf-8') as fin:
-                    for line_number, line in enumerate(fin):
-                        if text in line:
-                            results.append(Result(
-                                file=abs_file_path,
-                                line_number=line_number,
-                                line_text=line.rstrip()
-                            ))
-                            print(f'result {len(results)}: ', end='')
-                            print_result(results[-1])
-            except UnicodeDecodeError:
-                pass
-    return results
+            yield from search_file(abs_file_path, text)
+
+
+def search_file(file, text):
+    Result = collections.namedtuple('search_result',
+                                    'file, line_number, line_text')
+    try:
+        with open(file, 'r', encoding='utf-8') as fin:
+            for line_number, line in enumerate(fin):
+                if text in line:
+                    yield Result(
+                        file=file,
+                        line_number=line_number,
+                        line_text=line.rstrip()
+                    )
+    except UnicodeDecodeError:
+        pass
 
 
 def print_result(result):
