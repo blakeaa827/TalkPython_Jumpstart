@@ -1,14 +1,11 @@
 import csv
 import os
-import rerecord
+from rerecord import Record
 import statistics
 
 def main():
     purchases: list = get_records(file_location())
-    print('{:,}'.format(get_avg_sale(purchases)))
-    print(get_min_sale(purchases))
-    print(get_max_sale(purchases))
-
+    print(purchases[0].__dict__)
 
 def file_location():
     file = 'SacramentoRealEstateTransactions2008.csv'
@@ -20,7 +17,7 @@ def file_location():
 def get_records(file_path):
     with open(file_path, 'r', encoding='utf-8') as fin:
         reader = csv.DictReader(fin)
-        records = [r for r in reader]
+        records = [Record.create_record_from_dict(r) for r in reader]
         return records
 
 
