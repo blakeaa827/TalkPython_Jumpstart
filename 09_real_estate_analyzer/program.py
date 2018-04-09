@@ -40,7 +40,7 @@ def get_records(file_path):
         return records
 
 
-def get_avg_sale(purchases, stats=[], values=[]):
+def get_avg_sale(purchases, stats=list(), values=list()):
     if not stats:
         return int(statistics.mean((p.price for p in purchases)))
     elif len(stats) != len(values):
