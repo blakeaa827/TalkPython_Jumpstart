@@ -1,16 +1,16 @@
 class Record:
-    def __init__(self, street, city, zipcode, state, beds, baths, sq__ft, home_type,
-                 sale_date, price, latitude, longitude, ):
+    def __init__(self, street, city, zipcode, state, beds, baths, sq__ft,
+                 home_type, sale_date, price, latitude, longitude, ):
         self.street = street
         self.city = city
         self.zip = zipcode
         self.state = state
-        self.beds = int(beds)
-        self.baths = int(baths)
-        self.sq__ft = int(sq__ft)
+        self.beds = beds
+        self.baths = baths
+        self.sq__ft = sq__ft
         self.type = home_type
         self.sale_date = sale_date
-        self.price = int(price)
+        self.price = price
         self.latitude = latitude
         self.longitude = longitude
 
