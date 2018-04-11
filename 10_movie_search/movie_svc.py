@@ -3,6 +3,9 @@ import collections
 
 
 def search_movies(search_term):
+    if not search_term.strip():
+        raise ValueError("empty search provided")
+
     url = f'http://movie_service.talkpython.fm/api/search/{search_term}'
     resp = requests.get(url)
 

@@ -1,4 +1,5 @@
 from movie_svc import search_movies
+import requests
 
 def main():
     print_banner()
@@ -8,10 +9,18 @@ def main():
             print('Good Bye!!!')
             exit(0)
         else:
-            movies = sorted(get_movies(search_for), key=lambda m: -m.year)
-            for m in movies:
-                print(f'{m.year} -- {m.title}')
-            print()
+            try:
+                movies = sorted(get_movies(search_for), key=lambda m: -m.year)
+                for m in movies:
+                    print(f'{m.year} -- {m.title}')
+                print()
+            except ValueError:
+                print("ValueError: a search term must be provided")
+            except requests.exceptions.ConnectionError:
+                print("ConnectionError: cannot establish connection to search "
+                      "server")
+            except Exception as ge:
+                print(f"UnexpectedError: {ge}")
 
 
 def print_banner():
